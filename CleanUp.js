@@ -30,9 +30,40 @@ const patchesOfDirt = patchesOfDirtRows.map(getCoords)
 const last = rows.length - 1
 const instructions = rows[last].split("")
 
-console.log(roomDimensions, hooverPosition, patchesOfDirt, instructions)
+/* MOVE HOOVER */
+
+const moveHoover = (initialPosition, instructions) => {
+  let currentPosition = initialPosition
+
+  return instructions.map(instruction => {
+    currentPosition = moveToNextPosition(currentPosition, instruction)
+    
+    return currentPosition
+  })
+}
+
+const moveToNextPosition = (currentPosition, instruction) => {
+  switch (instruction) {
+    case "N":
+      return {...currentPosition, y: currentPosition.y + 1}
+    case "S":
+      return {...currentPosition, y: currentPosition.y - 1}
+    case "W":
+      return {...currentPosition, x: currentPosition.x -1}
+    case "E":
+      return {...currentPosition, x: currentPosition.x + 1}
+    default:
+      return currentPosition
+  }
+}
+
+const hooverMovements = moveHoover(hooverPosition, instructions)
+
+console.log(hooverMovements)
 
  module.exports = {
   extractData,
-  getCoords
+  getCoords,
+  moveHoover,
+  moveToNextPosition
 }
