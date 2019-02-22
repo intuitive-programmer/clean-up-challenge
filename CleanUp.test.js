@@ -2,7 +2,8 @@ const {
   extractData,
   getCoords,
   moveHoover,
-  moveToNextPosition
+  moveToNextPosition,
+  checkMoveValidity
 } = require("./CleanUp")
 
 test("extractData returns a string", () => {
@@ -14,7 +15,7 @@ test("getCoords returns an object with x and y coordinates", () => {
 })
 
 test("hoover moves from coordinates { x: 0, y: 0 } to { x: 0, y: 0 } with instructions [ 'N', 'E', 'S', 'W' ] and returns an array of all movements", () => {
-  expect(moveHoover({ x: 0, y: 0 }, [ 'N', 'E', 'S', 'W' ])).toMatchObject([{ x: 0, y: 1 }, { x: 1, y: 1 }, { x: 1, y: 0 }, { x: 0, y: 0 }])
+  expect(moveHoover({ x: 5, y: 5}, { x: 0, y: 0 }, [ 'N', 'E', 'S', 'W' ])).toMatchObject([{ x: 0, y: 1 }, { x: 1, y: 1 }, { x: 1, y: 0 }, { x: 0, y: 0 }])
 })
 
 test("the instruction 'N' adds 1 to the Y coordinate", () => {
@@ -35,4 +36,14 @@ test("the instruction 'E' adds 1 from the X coordinate", () => {
 
 test("an invalid instruction returns original coordinates", () => {
   expect(moveToNextPosition({ x: 0, y: 0 }, "Z")).toMatchObject({ x: 0, y: 0 })
+})
+
+test("hoover movement remains inside roomDimensions", () => {
+  expect(checkMoveValidity({ x: 5, y: 5 }, { x: 0, y: 0 })).toBe(true)
+  expect(checkMoveValidity({ x: 5, y: 5 }, { x: 5, y: 5 })).toBe(true)
+  expect(checkMoveValidity({ x: 5, y: 5 }, { x: 2, y: 2 })).toBe(true)
+  expect(checkMoveValidity({ x: 5, y: 5 }, { x: -1, y: 1 })).toBe(false)
+  expect(checkMoveValidity({ x: 5, y: 5 }, { x: 1, y: -1 })).toBe(false)
+  expect(checkMoveValidity({ x: 5, y: 5 }, { x: 1, y: 6 })).toBe(false)
+  expect(checkMoveValidity({ x: 5, y: 5 }, { x: 6, y: 1 })).toBe(false)
 })

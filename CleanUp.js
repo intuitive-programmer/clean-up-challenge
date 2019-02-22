@@ -32,12 +32,19 @@ const instructions = rows[last].split("")
 
 /* MOVE HOOVER */
 
-const moveHoover = (initialPosition, instructions) => {
+const moveHoover = (roomDimensions, initialPosition, instructions) => {
   let currentPosition = initialPosition
 
   return instructions.map(instruction => {
-    currentPosition = moveToNextPosition(currentPosition, instruction)
-    
+    const nextPosition = moveToNextPosition(currentPosition, instruction)
+
+    const valid = checkMoveValidity(roomDimensions, nextPosition)
+
+    if (valid) {
+      currentPosition = nextPosition
+      return currentPosition
+    }
+
     return currentPosition
   })
 }
@@ -57,7 +64,15 @@ const moveToNextPosition = (currentPosition, instruction) => {
   }
 }
 
-const hooverMovements = moveHoover(hooverPosition, instructions)
+const checkMoveValidity = (roomDimensions, currentPosition) => {
+  if (currentPosition.x >= 0 && currentPosition.x <= roomDimensions.x && currentPosition.y >= 0 && currentPosition.y <= roomDimensions.y) {
+    return true
+  } else {
+    return false
+  }
+}
+
+const hooverMovements = moveHoover(roomDimensions, hooverPosition, instructions)
 
 console.log(hooverMovements)
 
@@ -65,5 +80,6 @@ console.log(hooverMovements)
   extractData,
   getCoords,
   moveHoover,
-  moveToNextPosition
+  moveToNextPosition,
+  checkMoveValidity
 }
