@@ -3,7 +3,8 @@ const {
   getCoords,
   moveHoover,
   moveToNextPosition,
-  checkMoveValidity
+  checkMoveValidity,
+  checkForCleanUps
 } = require("./CleanUp")
 
 test("extractData returns a string", () => {
@@ -46,4 +47,10 @@ test("hoover movement remains inside roomDimensions", () => {
   expect(checkMoveValidity({ x: 5, y: 5 }, { x: 1, y: -1 })).toBe(false)
   expect(checkMoveValidity({ x: 5, y: 5 }, { x: 1, y: 6 })).toBe(false)
   expect(checkMoveValidity({ x: 5, y: 5 }, { x: 6, y: 1 })).toBe(false)
+})
+
+test("check if hoover cleans any dirt patches during it's movements and returns an integer", () => {
+  expect(checkForCleanUps([{ x: 2, y: 3 }, { x: 3, y: 3 }, { x: 4, y: 3 }], [])).toBe(0)
+  expect(checkForCleanUps([{ x: 2, y: 3 }, { x: 3, y: 3 }, { x: 4, y: 3 }], [{ x: 1, y: 5 }])).toBe(0)
+  expect(checkForCleanUps([{ x: 2, y: 3 }, { x: 3, y: 3 }, { x: 4, y: 3 }], [{ x: 3, y: 3 }])).toBe(1)
 })

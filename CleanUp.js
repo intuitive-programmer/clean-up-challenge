@@ -52,13 +52,13 @@ const moveHoover = (roomDimensions, initialPosition, instructions) => {
 const moveToNextPosition = (currentPosition, instruction) => {
   switch (instruction) {
     case "N":
-      return {...currentPosition, y: currentPosition.y + 1}
+      return { ...currentPosition, y: currentPosition.y + 1 }
     case "S":
-      return {...currentPosition, y: currentPosition.y - 1}
+      return { ...currentPosition, y: currentPosition.y - 1 }
     case "W":
-      return {...currentPosition, x: currentPosition.x -1}
+      return { ...currentPosition, x: currentPosition.x - 1 }
     case "E":
-      return {...currentPosition, x: currentPosition.x + 1}
+      return { ...currentPosition, x: currentPosition.x + 1 }
     default:
       return currentPosition
   }
@@ -74,12 +74,24 @@ const checkMoveValidity = (roomDimensions, currentPosition) => {
 
 const hooverMovements = moveHoover(roomDimensions, hooverPosition, instructions)
 
-console.log(hooverMovements)
+/* CHECK FOR CLEAN UPS */
 
- module.exports = {
+const checkForCleanUps = (hooverMovements, patchesOfDirt) => {
+  const matchedPosition = patch => position => patch.x === position.x && patch.y === position.y
+  const hasBeenHoovered = patch => hooverMovements.filter(matchedPosition(patch)).length > 0
+
+  return patchesOfDirt.filter(hasBeenHoovered).length
+}
+
+const numberOfCleanUps = checkForCleanUps(hooverMovements, patchesOfDirt)
+
+console.log(numberOfCleanUps)
+
+module.exports = {
   extractData,
   getCoords,
   moveHoover,
   moveToNextPosition,
-  checkMoveValidity
+  checkMoveValidity,
+  checkForCleanUps
 }
