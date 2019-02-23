@@ -85,7 +85,23 @@ const checkForCleanUps = (hooverMovements, patchesOfDirt) => {
 
 const numberOfCleanUps = checkForCleanUps(hooverMovements, patchesOfDirt)
 
-console.log(numberOfCleanUps)
+/* DISPLAY RESULTS */
+
+const getFinalPosition = hooverMovements => {
+  const last = hooverMovements.length - 1
+  return hooverMovements[last]
+}
+
+const finalPosition = getFinalPosition(hooverMovements)
+
+const displayResults = (finalPosition, numberOfCleanUps) => {
+  console.log(finalPosition.x + " " + finalPosition.y)
+  console.log(numberOfCleanUps)
+}
+
+displayResults(finalPosition, numberOfCleanUps)
+
+/* EXPORT FUNCTIONS FOR UNIT TESTING */
 
 module.exports = {
   extractData,
@@ -93,5 +109,6 @@ module.exports = {
   moveHoover,
   moveToNextPosition,
   checkMoveValidity,
-  checkForCleanUps
+  checkForCleanUps,
+  getFinalPosition
 }

@@ -4,7 +4,8 @@ const {
   moveHoover,
   moveToNextPosition,
   checkMoveValidity,
-  checkForCleanUps
+  checkForCleanUps,
+  getFinalPosition
 } = require("./CleanUp")
 
 test("extractData returns a string", () => {
@@ -53,4 +54,8 @@ test("check if hoover cleans any dirt patches during it's movements and returns 
   expect(checkForCleanUps([{ x: 2, y: 3 }, { x: 3, y: 3 }, { x: 4, y: 3 }], [])).toBe(0)
   expect(checkForCleanUps([{ x: 2, y: 3 }, { x: 3, y: 3 }, { x: 4, y: 3 }], [{ x: 1, y: 5 }])).toBe(0)
   expect(checkForCleanUps([{ x: 2, y: 3 }, { x: 3, y: 3 }, { x: 4, y: 3 }], [{ x: 3, y: 3 }])).toBe(1)
+})
+
+test("check final movement of [{ x: 2, y: 3 }, { x: 3, y: 3 }, { x: 4, y: 3 }] is { x: 4, y: 3 }", () => {
+  expect(getFinalPosition([{ x: 2, y: 3 }, { x: 3, y: 3 }, { x: 4, y: 3 }])).toMatchObject({ x: 4, y: 3 })
 })
