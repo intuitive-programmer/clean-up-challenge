@@ -6,8 +6,6 @@ const extractData = path => {
   return data.toString()
 }
 
-const cleanUpData = extractData('./input001.txt')
-
 /* ASSIGN DATA TO VARIABLES */
 
 const getCoords = data => {
@@ -17,18 +15,6 @@ const getCoords = data => {
     y: parseInt(coords[1])
   }
 }
-
-const rows = cleanUpData.split("\n")
-
-const roomDimensions = getCoords(rows[0])
-
-const hooverPosition = getCoords(rows[1])
-
-const patchesOfDirtRows = rows.slice(2, -1)
-const patchesOfDirt = patchesOfDirtRows.map(getCoords)
-
-const last = rows.length - 1
-const instructions = rows[last].split("")
 
 /* MOVE HOOVER */
 
@@ -72,8 +58,6 @@ const checkMoveValidity = (roomDimensions, currentPosition) => {
   }
 }
 
-const hooverMovements = moveHoover(roomDimensions, hooverPosition, instructions)
-
 /* CHECK FOR CLEAN UPS */
 
 const checkForCleanUps = (hooverMovements, patchesOfDirt) => {
@@ -83,8 +67,6 @@ const checkForCleanUps = (hooverMovements, patchesOfDirt) => {
   return patchesOfDirt.filter(hasBeenHoovered).length
 }
 
-const numberOfCleanUps = checkForCleanUps(hooverMovements, patchesOfDirt)
-
 /* DISPLAY RESULTS */
 
 const getFinalPosition = hooverMovements => {
@@ -92,14 +74,43 @@ const getFinalPosition = hooverMovements => {
   return hooverMovements[last]
 }
 
-const finalPosition = getFinalPosition(hooverMovements)
-
-const displayResults = (finalPosition, numberOfCleanUps) => {
+const displayResults = (testNumber, finalPosition, numberOfCleanUps) => {
+  console.log("Results for input00" + testNumber + ":")
   console.log(finalPosition.x + " " + finalPosition.y)
   console.log(numberOfCleanUps)
 }
 
-displayResults(finalPosition, numberOfCleanUps)
+/* EXECUTION AND TEST OTHER INPUT FILES */
+
+const cleanUp = (path, testNumber) => {
+  const cleanUpData = extractData(path)
+
+  const rows = cleanUpData.split("\n")
+
+  const roomDimensions = getCoords(rows[0])
+
+  const hooverPosition = getCoords(rows[1])
+
+  const patchesOfDirtRows = rows.slice(2, -1)
+  const patchesOfDirt = patchesOfDirtRows.map(getCoords)
+
+  const last = rows.length - 1
+  const instructions = rows[last].split("")
+
+  const hooverMovements = moveHoover(roomDimensions, hooverPosition, instructions)
+
+  const numberOfCleanUps = checkForCleanUps(hooverMovements, patchesOfDirt)
+
+  const finalPosition = getFinalPosition(hooverMovements)
+
+  displayResults(testNumber, finalPosition, numberOfCleanUps)
+}
+
+const inputs = ['./input001.txt', './input002.txt', './input003.txt']
+
+const cleanUpAll = inputs => inputs.map((input, index) => cleanUp(input, index + 1))
+
+cleanUpAll(inputs)
 
 /* EXPORT FUNCTIONS FOR UNIT TESTING */
 
